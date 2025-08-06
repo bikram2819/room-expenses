@@ -25,9 +25,9 @@ export default function Auth() {
       <input type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} /><br /><br />
       <button onClick={handleLogin}>Login</button>
       <button onClick={handleSignup} style={{ marginLeft: '1rem' }}>Sign Up</button>
-<p>
-  <Link to="/reset-password">Forgot password?</Link>
-</p>
+<p style={{ marginTop: '8px' }}>
+    <a href="/reset-password">Forgot Password?</a>
+  </p>
     </div>
   )
 }
