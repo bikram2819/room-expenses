@@ -1,51 +1,30 @@
-// src/ResetPassword.js
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { supabase } from './supabaseClient';
-import { useEffect } from 'react';
 
-function ResetPassword() {
-  const [newPassword, setNewPassword] = useState('');
+export default function ResetPassword() {
+  const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
 
-  useEffect(() => {
-    // This ensures the session is recovered from the URL
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session) {
-        setError("Invalid or expired session. Please request a new reset link.");
-      }
-    });
-  }, []);
-
-  const handleSubmit = async () => {
-    const { data, error } = await supabase.auth.updateUser({ password: newPassword });
-
+  const handleReset = async () => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email);
     if (error) {
-      setError(error.message);
-      setMessage('');
+      setMessage('Error sending reset email.');
     } else {
-      setMessage('✅ Password updated! You can now log in.');
-      setError('');
+      setMessage('Password reset email sent.');
     }
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: '50px auto', textAlign: 'center' }}>
-      <h2>Reset Your Password</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {message && <p style={{ color: 'green' }}>{message}</p>}
+    <div>
+      <h2>Reset Password</h2>
       <input
-        type="password"
-        placeholder="New password"
-        value={newPassword}
-        onChange={(e) => setNewPassword(e.target.value)}
-        style={{ padding: 8, width: '100%', marginBottom: 10 }}
+        type="email"
+        placeholder="Enter your email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
       />
-      <button onClick={handleSubmit} style={{ padding: 10, width: '100%' }}>
-        Update Password
-      </button>
+      <button onClick={handleReset}>Send Reset Email</button>
+      <p>{message}</p>
     </div>
   );
 }
-
-export default ResetPassword;
