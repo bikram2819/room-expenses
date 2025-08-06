@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { supabase } from './supabaseClient'
+import { Link } from 'react-router-dom'
 
 export default function Auth() {
   const [email, setEmail] = useState('')
@@ -24,6 +25,9 @@ export default function Auth() {
       <input type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} /><br /><br />
       <button onClick={handleLogin}>Login</button>
       <button onClick={handleSignup} style={{ marginLeft: '1rem' }}>Sign Up</button>
+<p>
+  <Link to="/reset-password">Forgot password?</Link>
+</p>
     </div>
   )
 }
